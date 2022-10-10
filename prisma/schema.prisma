@@ -9,3 +9,38 @@ datasource db {
   provider = "postgresql"
   url      = env("DATABASE_URL")
 }
+
+model Admin {
+  id        Int      @id @default(autoincrement())
+  email     String
+  fullNames String
+  createdAt DateTime @default(now())
+}
+
+model Blogger {
+  id        Int      @id @default(autoincrement())
+  email     String
+  fullNames String
+  createdAt DateTime @default(now())
+}
+
+model User {
+  id        Int    @id @default(autoincrement())
+  email     String
+  fullNames String
+  role      String
+  password  String
+  userId    Int
+  Blog      Blog[]
+}
+
+model Blog {
+  id          Int      @id @default(autoincrement())
+  userId      Int
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+  title       String
+  description String
+  photoUrl    String
+  user        User     @relation(fields: [userId], references: [id], onUpdate: Cascade, onDelete: Cascade)
+}
