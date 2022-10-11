@@ -9,6 +9,7 @@ import { MulterModule } from '@nestjs/platform-express';
 import { memoryStorage } from 'multer';
 import { APP_FILTER } from '@nestjs/core';
 import { GlobalExceptionFilter } from './__shared__/filters/global-exception.filter';
+import { UserModule } from './user/user.module';
 
 @Module({
   imports: [
@@ -21,6 +22,7 @@ import { GlobalExceptionFilter } from './__shared__/filters/global-exception.fil
     MulterModule.register({
       storage: memoryStorage(),
     }),
+    UserModule,
   ],
   providers: [
     {

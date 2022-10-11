@@ -18,6 +18,7 @@ import {
   ApiOperation,
   ApiRequestTimeoutResponse,
   ApiTags,
+  ApiUnauthorizedResponse,
 } from '@nestjs/swagger';
 import { User } from '@prisma/client';
 import { AllowRoles, GetUser } from 'src/auth/decorators';
@@ -33,6 +34,8 @@ import { UploadFileDto } from './dto';
 @ApiBearerAuth()
 @UseGuards(JwtGuard, RolesGuard)
 @AllowRoles(ERoles.BLOGGER)
+@ApiUnauthorizedResponse({ description: 'Unthorized' })
+@ApiInternalServerErrorResponse({ description: 'Internal server error' })
 export class BloggerController {
   constructor(private readonly blogService: BloggerService) {}
 
@@ -40,7 +43,6 @@ export class BloggerController {
   @Post('uplaod')
   @ApiConsumes('multipart/form-data')
   @ApiCreatedResponse({ description: 'Blog uploaded' })
-  @ApiInternalServerErrorResponse({ description: 'Server down' })
   @ApiBody({
     schema: {
       type: 'object',
