@@ -23,6 +23,6 @@ async function bootstrap() {
       docExpansion: 'none',
     },
   });
-  await app.listen(process.env.PORT || 5000);
+  await app.listen(process.env.PORT || 4000);
 }
 bootstrap();
