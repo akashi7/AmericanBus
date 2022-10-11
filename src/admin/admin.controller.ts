@@ -7,6 +7,7 @@ import {
   ApiInternalServerErrorResponse,
   ApiOperation,
   ApiTags,
+  ApiUnauthorizedResponse,
 } from '@nestjs/swagger';
 import { AllowRoles } from 'src/auth/decorators';
 import { ERoles } from 'src/auth/enums';
@@ -22,6 +23,7 @@ import { createBloggerDto } from './dto';
 @UseGuards(JwtGuard, RolesGuard)
 @AllowRoles(ERoles.ADMIN)
 @ApiInternalServerErrorResponse({ description: 'Internal server error' })
+@ApiUnauthorizedResponse({ description: 'Unthorized' })
 export class AdminController {
   constructor(private readonly adminService: AdminService) {}
 

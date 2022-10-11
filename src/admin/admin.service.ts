@@ -42,4 +42,6 @@ export class AdminService {
       return newUser;
     }
   }
+
+  async editBlogger() {}
 }
