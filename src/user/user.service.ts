@@ -3,16 +3,22 @@ import {
   ConflictException,
   ForbiddenException,
   Injectable,
+  RequestTimeoutException,
 } from '@nestjs/common';
 import { Blog, User } from '@prisma/client';
 import * as argon from 'argon2';
 import { ERoles } from 'src/auth/enums';
+import { UploadFileDto } from 'src/blogger/dto';
+import { CloudinaryService } from 'src/cloudinary/cloudinary.service';
 import { PrismaService } from 'src/prisma/prisma.service';
 import { EditProfileDto, UpdateBlogDto, UpdatePasswordDto } from './dto';
 
 @Injectable()
 export class UserService {
-  constructor(private readonly prisma: PrismaService) {}
+  constructor(
+    private readonly prisma: PrismaService,
+    private readonly cloudinary: CloudinaryService,
+  ) {}
 
   async update(
     role: string,
@@ -89,6 +95,26 @@ export class UserService {
       const message = 'password updated';
       return message;
     }
+  }
+
+  async createBlog(
+    file: Express.Multer.File,
+    dto: UploadFileDto,
+    user: User,
+  ): Promise<Blog> {
+    const image = await this.cloudinary.uploadImage(file);
+    if (image) {
+      const blog = await this.prisma.blog.create({
+        data: {
+          title: dto.title,
+          description: dto.description,
+          userId: user.id,
+          photoUrl: image.secure_url,
+        },
+      });
+      return blog;
+    }
+    throw new RequestTimeoutException('Internet Error in uploading file');
   }
 
   async userViewAllHisBlogs(user: User): Promise<Blog[]> {
