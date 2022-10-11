@@ -5,6 +5,7 @@ import {
   ApiConflictResponse,
   ApiCreatedResponse,
   ApiInternalServerErrorResponse,
+  ApiOperation,
   ApiTags,
 } from '@nestjs/swagger';
 import { AllowRoles } from 'src/auth/decorators';
@@ -28,6 +29,7 @@ export class AdminController {
   @ApiConflictResponse({ description: 'Blogger or user Exists' })
   @ApiBody({ type: createBloggerDto })
   @Post('create-blogger')
+  @ApiOperation({ summary: 'create bloggers account' })
   async createBlogger(@Body() dto: createBloggerDto) {
     const result = await this.adminService.createBlogger(dto);
     return new GenericResponse('Blogger created', result);

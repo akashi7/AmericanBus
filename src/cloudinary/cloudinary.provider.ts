@@ -1,7 +1,8 @@
 import { v2 } from 'cloudinary';
 
 export const CloudinaryProvider = {
-  useFactory: ()=> {
+  provide: 'cloudinary',
+  useFactory: () => {
     return v2.config({
       cloud_name: 'akashi',
       api_key: '311788717323835',
