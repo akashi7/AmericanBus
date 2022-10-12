@@ -10,6 +10,7 @@ import { memoryStorage } from 'multer';
 import { APP_FILTER } from '@nestjs/core';
 import { GlobalExceptionFilter } from './__shared__/filters/global-exception.filter';
 import { UserModule } from './user/user.module';
+import { PublicblogsModule } from './publicblogs/publicblogs.module';
 
 @Module({
   imports: [
@@ -23,6 +24,7 @@ import { UserModule } from './user/user.module';
       storage: memoryStorage(),
     }),
     UserModule,
+    PublicblogsModule,
   ],
   providers: [
     {
