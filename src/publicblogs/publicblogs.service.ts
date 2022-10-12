@@ -9,4 +9,10 @@ export class PublicblogsService {
     const blogs = await this.prisma.blog.findMany();
     return blogs;
   }
+  async viewBlog(id: number): Promise<Blog> {
+    const blog = await this.prisma.blog.findFirst({
+      where: { id },
+    });
+    return blog;
+  }
 }
