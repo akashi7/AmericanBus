@@ -1,5 +1,15 @@
-import { Controller, Get, ParseIntPipe, Query } from '@nestjs/common';
 import {
+  Body,
+  Controller,
+  Get,
+  ParseIntPipe,
+  Post,
+  Query,
+} from '@nestjs/common';
+import {
+  ApiBadGatewayResponse,
+  ApiBody,
+  ApiCreatedResponse,
   ApiInternalServerErrorResponse,
   ApiOkResponse,
   ApiOperation,
@@ -7,6 +17,7 @@ import {
   ApiTags,
 } from '@nestjs/swagger';
 import { GenericResponse } from 'src/__shared__/dto/generic-response.dto';
+import { contactUsDto } from './dto';
 import { PublicblogsService } from './publicblogs.service';
 
 @Controller('publicblogs')
@@ -29,5 +40,15 @@ export class PublicblogsController {
   async viewOneBlog(@Query('id', ParseIntPipe) id: number) {
     const result = await this.publiService.viewBlog(id);
     return new GenericResponse('one blog', result);
+  }
+
+  @ApiCreatedResponse({ description: 'Email sent' })
+  @ApiBadGatewayResponse({ description: 'Email not sent' })
+  @ApiOperation({ summary: 'contact us form' })
+  @ApiBody({ type: contactUsDto })
+  @Post('contact-us')
+  async contactUsForm(@Body() dto: contactUsDto) {
+    const result = await this.publiService.contactUs(dto);
+    return new GenericResponse('mail status', result);
   }
 }
