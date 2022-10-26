@@ -24,7 +24,7 @@ export class PublicblogsService {
   async contactUs(dto: contactUsDto): Promise<{ message: string }> {
     const { email, message, fullNames, phone, subject } = dto;
     return this.mail.sendMail(
-      `info@americabuz.com`,
+      `americanbuzusa@gmail.com`,
       `${subject}`,
       `${email}`,
       `
